@@ -22,7 +22,7 @@ public class ParkingLot {
         }
     }
 
-    public boolean slotAvailable() {
+    private boolean slotAvailable() {
         return availableSlots > 0;
     }
 
