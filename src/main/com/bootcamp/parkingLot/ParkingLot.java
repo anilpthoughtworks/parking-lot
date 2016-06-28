@@ -24,7 +24,8 @@ public class ParkingLot {
             Object token = new Object();
             carTicket.put(token, car);
             availableSlots--;
-            if (isFull()) notifyObserver();
+            if (isFull())
+                notifyObserver();
             return token;
         } else {
             throw CanNotParkException.slotIsFull();

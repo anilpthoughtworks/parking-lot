@@ -52,16 +52,14 @@ public class ParkingLotTest {
 
     @Test
     public void shouldInformWhenParkingLotIfFull() throws CanNotParkException {
-        ParkingLotObserver parkingOwnerMock = mock(ParkingOwner.class);
-        ParkingLotObserver securityOfficerMock = mock(SecurityOfficer.class);
+        ParkingLotObserver parkingOwnerMock = mock(ParkingLotObserver.class);
         parkingLotTwo.addObserver(parkingOwnerMock);
-        parkingLotTwo.addObserver(securityOfficerMock);
-
         parkingLotTwo.parkCar(carA);
-        parkingLotTwo.parkCar(carB);
 
+        verify(parkingOwnerMock, times(0)).update(ParkingLotConstants.PARKING_FULL);
+
+        parkingLotTwo.parkCar(carB);
         verify(parkingOwnerMock, times(1)).update(ParkingLotConstants.PARKING_FULL);
-        verify(securityOfficerMock, times(1)).update(ParkingLotConstants.PARKING_FULL);
     }
 
 }
