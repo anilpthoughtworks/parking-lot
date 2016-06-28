@@ -1,4 +1,4 @@
-package com.bootcamp.parkingLot;
+package com.bootcamp.parkingLot.exception;
 
 public class CanNotParkException extends Exception {
     public CanNotParkException(String message) {
