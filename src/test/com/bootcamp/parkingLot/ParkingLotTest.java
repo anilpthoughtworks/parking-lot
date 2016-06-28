@@ -6,8 +6,7 @@ import com.bootcamp.parkingLot.observer.ParkingLotObserver;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -40,14 +39,15 @@ public class ParkingLotTest {
     @Test
     public void shouldBeAbleToUnparkCar() throws Exception {
         Object token = parkingLotOne.parkCar(carA);
-        boolean isUnparked = parkingLotOne.unparkCar(token);
-        assertTrue(isUnparked);
+        Object car = parkingLotOne.unparkCar(token);
+        assertEquals(car, carA);
     }
 
     @Test
     public void shouldNotUnparkWithInvalidToken() throws CanNotParkException {
-        boolean shouldNotUnpark = parkingLotOne.unparkCar(new Object());
-        assertFalse(shouldNotUnpark);
+        Object tokenForCarA = parkingLotOne.parkCar(carA);
+        Object car = parkingLotOne.unparkCar(tokenForCarA);
+        assertNotNull(car);
     }
 
     @Test

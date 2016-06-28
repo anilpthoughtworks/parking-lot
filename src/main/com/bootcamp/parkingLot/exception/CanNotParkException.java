@@ -10,4 +10,8 @@ public class CanNotParkException extends Exception {
     public static CanNotParkException slotIsFull(){
         return new CanNotParkException(ParkingLotConstants.PARKING_FULL);
     }
+
+    public static CanNotParkException invalidToken() {
+        return new CanNotParkException(ParkingLotConstants.INVALID_TOKEN);
+    }
 }

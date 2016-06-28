@@ -42,13 +42,13 @@ public class ParkingLot {
         return availableSlots > 0;
     }
 
-    public boolean unparkCar(Object token) {
+    public Object unparkCar(Object token) throws CanNotParkException {
         if (carTicket.containsKey(token)) {
-            carTicket.remove(token);
+            Object car = carTicket.remove(token);
             availableSlots++;
-            return true;
+            return car;
         } else
-            return false;
+            throw CanNotParkException.invalidToken();
     }
 
     public boolean isFull() {
