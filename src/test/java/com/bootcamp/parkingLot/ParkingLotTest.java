@@ -63,10 +63,10 @@ public class ParkingLotTest {
         parkingLotTwo.addObserver(parkingOwnerMock);
         parkingLotTwo.park(carA);
 
-        verify(parkingOwnerMock, times(0)).update(ParkingLotConstants.PARKING_FULL);
+        verify(parkingOwnerMock, times(0)).parkingLotIsFull();
 
         parkingLotTwo.park(carB);
-        verify(parkingOwnerMock, times(1)).update(ParkingLotConstants.PARKING_FULL);
+        verify(parkingOwnerMock, times(1)).parkingLotIsFull();
     }
 
     @Test(expected = CanNotParkException.class)
@@ -74,5 +74,16 @@ public class ParkingLotTest {
         Object invalidToken = new Object();
 
         parkingLotOne.unpark(invalidToken);
+    }
+
+    @Test
+    public void shouldNotifyObserverWhenParkingIsAvailable() throws CanNotParkException {
+        ParkingOwner parkingOwner = mock(ParkingOwner.class);
+        parkingLotOne.addObserver(parkingOwner);
+
+        Object tokenForCarA = parkingLotOne.park(carA);
+        parkingLotOne.unpark(tokenForCarA);
+
+        verify(parkingOwner, times(1)).parkingIsAvailable();
     }
 }

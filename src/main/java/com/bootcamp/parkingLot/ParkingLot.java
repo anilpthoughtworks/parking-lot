@@ -1,6 +1,5 @@
 package com.bootcamp.parkingLot;
 
-import com.bootcamp.parkingLot.constants.ParkingLotConstants;
 import com.bootcamp.parkingLot.exception.CanNotParkException;
 import com.bootcamp.parkingLot.observer.ParkingLotObserver;
 
@@ -9,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ParkingLot {
-    private int availableSlots;
+    private int capacity;
     private HashMap<Object, Object> tokenVehicleMap;
     private List<ParkingLotObserver> observers;
 
     public ParkingLot(int slots) {
-        this.availableSlots = slots;
+        this.capacity = slots;
         tokenVehicleMap = new HashMap<Object, Object>();
         observers = new ArrayList();
     }
@@ -24,7 +23,7 @@ public class ParkingLot {
             Object token = new Object();
             tokenVehicleMap.put(token, car);
             if (isFull())
-                notifyObserver();
+                notifyParkingIsFull();
             return token;
         } else {
             throw CanNotParkException.slotIsFull();
@@ -34,17 +33,19 @@ public class ParkingLot {
     public Object unpark(Object token) throws CanNotParkException {
         if (tokenVehicleMap.containsKey(token)) {
             Object car = tokenVehicleMap.remove(token);
+            if (isParkingAvailable())
+                notifyParkingIsAvailable();
             return car;
         } else
             throw CanNotParkException.invalidToken();
     }
 
     public boolean isSlotAvailable() {
-        return tokenVehicleMap.size() < availableSlots;
+        return tokenVehicleMap.size() < capacity;
     }
 
     public boolean isFull() {
-        return availableSlots == tokenVehicleMap.size();
+        return capacity == tokenVehicleMap.size();
     }
 
     public void addObserver(ParkingLotObserver parkingLotObserver) {
@@ -54,9 +55,20 @@ public class ParkingLot {
     public boolean containsToken(Object token) {
         return tokenVehicleMap.containsKey(token);
     }
-    private void notifyObserver() {
+
+    private boolean isParkingAvailable() {
+        return tokenVehicleMap.size() == capacity - 1;
+    }
+
+    private void notifyParkingIsFull() {
         for (ParkingLotObserver observer : observers) {
-            observer.update(ParkingLotConstants.PARKING_FULL);
+            observer.parkingLotIsFull();
+        }
+    }
+
+    private void notifyParkingIsAvailable() {
+        for (ParkingLotObserver observer : observers) {
+            observer.parkingIsAvailable();
         }
     }
 
