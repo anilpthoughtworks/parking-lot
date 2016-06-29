@@ -69,4 +69,10 @@ public class ParkingLotTest {
         verify(parkingOwnerMock, times(1)).update(ParkingLotConstants.PARKING_FULL);
     }
 
+    @Test(expected = CanNotParkException.class)
+    public void shouldNotBeAbleToUnparkCarWithInvalidToken() throws Exception {
+        Object invalidToken = new Object();
+
+        parkingLotOne.unparkCar(invalidToken);
+    }
 }
