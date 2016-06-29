@@ -31,30 +31,30 @@ public class ParkingLot {
         }
     }
 
+    public Object unparkCar(Object token) throws CanNotParkException {
+        if (tokenVehicleMap.containsKey(token)) {
+            Object car = tokenVehicleMap.remove(token);
+            return car;
+        } else
+            throw CanNotParkException.invalidToken();
+    }
+
+    public boolean isSlotAvailable() {
+        return tokenVehicleMap.size() < availableSlots;
+    }
+
+    public boolean isFull() {
+        return availableSlots == tokenVehicleMap.size();
+    }
+
+    public void addObserver(ParkingLotObserver parkingLotObserver) {
+        this.observers.add(parkingLotObserver);
+    }
+
     private void notifyObserver() {
         for (ParkingLotObserver observer : observers) {
             observer.update(ParkingLotConstants.PARKING_FULL);
         }
     }
 
-    public boolean isSlotAvailable() {
-        return availableSlots > 0;
-    }
-
-    public Object unparkCar(Object token) throws CanNotParkException {
-        if (tokenVehicleMap.containsKey(token)) {
-            Object car = tokenVehicleMap.remove(token);
-            availableSlots++;
-            return car;
-        } else
-            throw CanNotParkException.invalidToken();
-    }
-
-    public boolean isFull() {
-        return availableSlots == 0;
-    }
-
-    public void addObserver(ParkingLotObserver parkingLotObserver) {
-        this.observers.add(parkingLotObserver);
-    }
 }
