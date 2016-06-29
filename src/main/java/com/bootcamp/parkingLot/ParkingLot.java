@@ -10,20 +10,19 @@ import java.util.List;
 
 public class ParkingLot {
     private int availableSlots;
-    private HashMap<Object, Object> carTicket;
+    private HashMap<Object, Object> tokenVehicleMap;
     private List<ParkingLotObserver> observers;
 
     public ParkingLot(int slots) {
         this.availableSlots = slots;
-        carTicket = new HashMap<Object, Object>();
+        tokenVehicleMap = new HashMap<Object, Object>();
         observers = new ArrayList();
     }
 
     public Object parkCar(Object car) throws CanNotParkException {
-        if (slotAvailable()) {
+        if (isSlotAvailable()) {
             Object token = new Object();
-            carTicket.put(token, car);
-            availableSlots--;
+            tokenVehicleMap.put(token, car);
             if (isFull())
                 notifyObserver();
             return token;
@@ -38,13 +37,13 @@ public class ParkingLot {
         }
     }
 
-    private boolean slotAvailable() {
+    public boolean isSlotAvailable() {
         return availableSlots > 0;
     }
 
     public Object unparkCar(Object token) throws CanNotParkException {
-        if (carTicket.containsKey(token)) {
-            Object car = carTicket.remove(token);
+        if (tokenVehicleMap.containsKey(token)) {
+            Object car = tokenVehicleMap.remove(token);
             availableSlots++;
             return car;
         } else
