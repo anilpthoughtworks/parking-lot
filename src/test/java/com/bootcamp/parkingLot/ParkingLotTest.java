@@ -4,7 +4,9 @@ import com.bootcamp.parkingLot.constants.ParkingLotConstants;
 import com.bootcamp.parkingLot.exception.CanNotParkException;
 import com.bootcamp.parkingLot.observer.ParkingLotObserver;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,10 +32,15 @@ public class ParkingLotTest {
         assertNotNull(token);
     }
 
+    @Rule
+    public ExpectedException expectedEx = ExpectedException.none();
+
     @Test(expected = CanNotParkException.class)
     public void shouldNotBeAbleParkCarWhenSlotIsUnavailable() throws CanNotParkException {
         parkingLotOne.parkCar(carA);
         parkingLotOne.parkCar(carB);
+        expectedEx.expect(CanNotParkException.class);
+        expectedEx.expectMessage(ParkingLotConstants.PARKING_FULL);
     }
 
     @Test
