@@ -9,13 +9,20 @@ public class ParkingAttendant {
         this.allottedParkingLots = parkingLots;
     }
 
-    public Object parkMyCar(Object vehicle) throws CanNotParkException {
+    public Object parkMyVehicle(Object vehicle) throws CanNotParkException {
         for (ParkingLot parkingLot : allottedParkingLots)
             if (parkingLot.isSlotAvailable()) {
-                return parkingLot.parkCar(vehicle);
+                return parkingLot.park(vehicle);
             }
         throw CanNotParkException.slotIsFull();
     }
 
 
+    public Object unparkMyVehicle(Object parkingToken) throws CanNotParkException {
+        for (ParkingLot parkingLot : allottedParkingLots)
+            if (parkingLot.containsToken(parkingToken)) {
+                return parkingLot.unpark(parkingToken);
+            }
+        throw CanNotParkException.invalidToken();
+    }
 }

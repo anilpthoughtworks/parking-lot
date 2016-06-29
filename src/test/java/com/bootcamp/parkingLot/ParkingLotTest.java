@@ -28,7 +28,7 @@ public class ParkingLotTest {
 
     @Test
     public void shouldBeAbleToParkCarWhenSlotIsAvailable() throws CanNotParkException {
-        Object token = parkingLotTwo.parkCar(carA);
+        Object token = parkingLotTwo.park(carA);
         assertNotNull(token);
     }
 
@@ -37,23 +37,23 @@ public class ParkingLotTest {
 
     @Test(expected = CanNotParkException.class)
     public void shouldNotBeAbleParkCarWhenSlotIsUnavailable() throws CanNotParkException {
-        parkingLotOne.parkCar(carA);
-        parkingLotOne.parkCar(carB);
+        parkingLotOne.park(carA);
+        parkingLotOne.park(carB);
         expectedEx.expect(CanNotParkException.class);
         expectedEx.expectMessage(ParkingLotConstants.PARKING_FULL);
     }
 
     @Test
     public void shouldBeAbleToUnparkCar() throws Exception {
-        Object token = parkingLotOne.parkCar(carA);
-        Object car = parkingLotOne.unparkCar(token);
+        Object token = parkingLotOne.park(carA);
+        Object car = parkingLotOne.unpark(token);
         assertEquals(car, carA);
     }
 
     @Test
     public void shouldNotUnparkWithInvalidToken() throws CanNotParkException {
-        Object tokenForCarA = parkingLotOne.parkCar(carA);
-        Object car = parkingLotOne.unparkCar(tokenForCarA);
+        Object tokenForCarA = parkingLotOne.park(carA);
+        Object car = parkingLotOne.unpark(tokenForCarA);
         assertNotNull(car);
     }
 
@@ -61,11 +61,11 @@ public class ParkingLotTest {
     public void shouldInformWhenParkingLotIfFull() throws CanNotParkException {
         ParkingLotObserver parkingOwnerMock = mock(ParkingLotObserver.class);
         parkingLotTwo.addObserver(parkingOwnerMock);
-        parkingLotTwo.parkCar(carA);
+        parkingLotTwo.park(carA);
 
         verify(parkingOwnerMock, times(0)).update(ParkingLotConstants.PARKING_FULL);
 
-        parkingLotTwo.parkCar(carB);
+        parkingLotTwo.park(carB);
         verify(parkingOwnerMock, times(1)).update(ParkingLotConstants.PARKING_FULL);
     }
 
@@ -73,6 +73,6 @@ public class ParkingLotTest {
     public void shouldNotBeAbleToUnparkCarWithInvalidToken() throws Exception {
         Object invalidToken = new Object();
 
-        parkingLotOne.unparkCar(invalidToken);
+        parkingLotOne.unpark(invalidToken);
     }
 }

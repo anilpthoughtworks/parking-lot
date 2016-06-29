@@ -19,7 +19,7 @@ public class ParkingLot {
         observers = new ArrayList();
     }
 
-    public Object parkCar(Object car) throws CanNotParkException {
+    public Object park(Object car) throws CanNotParkException {
         if (isSlotAvailable()) {
             Object token = new Object();
             tokenVehicleMap.put(token, car);
@@ -31,7 +31,7 @@ public class ParkingLot {
         }
     }
 
-    public Object unparkCar(Object token) throws CanNotParkException {
+    public Object unpark(Object token) throws CanNotParkException {
         if (tokenVehicleMap.containsKey(token)) {
             Object car = tokenVehicleMap.remove(token);
             return car;
@@ -51,6 +51,9 @@ public class ParkingLot {
         this.observers.add(parkingLotObserver);
     }
 
+    public boolean containsToken(Object token) {
+        return tokenVehicleMap.containsKey(token);
+    }
     private void notifyObserver() {
         for (ParkingLotObserver observer : observers) {
             observer.update(ParkingLotConstants.PARKING_FULL);

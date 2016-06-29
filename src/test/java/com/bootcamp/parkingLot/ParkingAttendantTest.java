@@ -27,20 +27,34 @@ public class ParkingAttendantTest {
     public void shouldDirectMeToParkCar() throws CanNotParkException {
         ParkingAttendant parkingAttendant = new ParkingAttendant(parkingLotOne, parkingLotTwo);
         when(parkingLotOne.isSlotAvailable()).thenReturn(true);
-        when(parkingLotOne.parkCar(carA)).thenReturn(tokenForCarA);
+        when(parkingLotOne.park(carA)).thenReturn(tokenForCarA);
         when(parkingLotTwo.isSlotAvailable()).thenReturn(false);
 
-        assertEquals(parkingAttendant.parkMyCar(carA), tokenForCarA);
+        assertEquals(parkingAttendant.parkMyVehicle(carA), tokenForCarA);
     }
 
-    @Test(expected = CanNotParkException.class )
+    @Test(expected = CanNotParkException.class)
     public void shouldNotGetParkingLotIfParkingFull() throws CanNotParkException {
         ParkingAttendant parkingAttendant = new ParkingAttendant(parkingLotOne, parkingLotTwo);
         when(parkingLotOne.isSlotAvailable()).thenReturn(false);
         when(parkingLotTwo.isSlotAvailable()).thenReturn(false);
 
-        parkingAttendant.parkMyCar(carA);
+        parkingAttendant.parkMyVehicle(carA);
     }
 
+    @Test
+    public void shouldBeAbleToUnpark() throws CanNotParkException {
+        ParkingAttendant parkingAttendant = new ParkingAttendant(parkingLotOne, parkingLotTwo);
+        when(parkingLotOne.isSlotAvailable()).thenReturn(true);
+        when(parkingLotTwo.isSlotAvailable()).thenReturn(false);
 
+        Object token = new Object();
+
+        when(parkingLotOne.park(carA)).thenReturn(token);
+        when(parkingLotOne.containsToken(token)).thenReturn(true);
+        when(parkingLotOne.unpark(token)).thenReturn(carA);
+
+        Object parkingToken = parkingAttendant.parkMyVehicle(carA);
+        assertEquals(carA, parkingAttendant.unparkMyVehicle(parkingToken));
+    }
 }
