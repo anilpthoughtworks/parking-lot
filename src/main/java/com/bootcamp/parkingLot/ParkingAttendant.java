@@ -17,7 +17,6 @@ public class ParkingAttendant {
         throw CanNotParkException.slotIsFull();
     }
 
-
     public Object unparkMyVehicle(Object parkingToken) throws CanNotParkException {
         for (ParkingLot parkingLot : allottedParkingLots)
             if (parkingLot.containsToken(parkingToken)) {

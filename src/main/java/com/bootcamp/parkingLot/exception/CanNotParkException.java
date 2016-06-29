@@ -7,7 +7,7 @@ public class CanNotParkException extends Exception {
         super(message);
     }
 
-    public static CanNotParkException slotIsFull(){
+    public static CanNotParkException slotIsFull() {
         return new CanNotParkException(ParkingLotConstants.PARKING_FULL);
     }
 
