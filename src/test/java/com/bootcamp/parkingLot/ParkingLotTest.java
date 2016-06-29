@@ -86,4 +86,17 @@ public class ParkingLotTest {
 
         verify(parkingOwner, times(1)).parkingIsAvailable();
     }
+
+    @Test
+    public void shouldNotifyObserverOnlyOnceWhenParkingIsAvailable() throws CanNotParkException {
+        ParkingOwner parkingOwner = mock(ParkingOwner.class);
+        parkingLotTwo.addObserver(parkingOwner);
+
+        Object tokenForCarA = parkingLotTwo.park(carA);
+        Object tokenForCarB = parkingLotTwo.park(carB);
+        parkingLotTwo.unpark(tokenForCarA);
+        parkingLotTwo.unpark(tokenForCarB);
+
+        verify(parkingOwner, times(1)).parkingIsAvailable();
+    }
 }
