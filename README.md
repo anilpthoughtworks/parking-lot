@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ParkingLot
 
 1. As a driver, I want to park my car, so that  
@@ -8,4 +9,6 @@
  
 - Build tool : gradle
 - gradle test : run the test 
+=======
+>>>>>>> d10cc756e7e5a41dd4f19d0d1a2b25a04b7d79e7
 
